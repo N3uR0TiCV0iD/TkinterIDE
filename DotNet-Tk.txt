@@ -1,0 +1,15 @@
+Tabs = Notebook
+SplitContainer = PanedWindow
+GroupBox = LabelFrame
+TextBox (Multiline) = Text
+TextBox (SingleLine) = Entry
+DomainUpDown = SpinBox
+TrackBar [ValueBar] = Scale
+
+.Location|.Size = .place(x=X, y=Y, width=W, height=H)
+.Dock = .pack(side=SIDE, fill=FILL, extend=1) #SIDE=TOP, RIGHT, BOTTOM, LEFT | #FILL=X, Y, BOTH
+
+
+
+
+
