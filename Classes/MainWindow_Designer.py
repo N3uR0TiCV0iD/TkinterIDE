@@ -1,16 +1,26 @@
 from tkinter import *
 from tkinter.ttk import *
+from DesignWindowData import *
 
 def initWindow(self):
     #self.window
     self.window = Tk()
-    self.window.title("Tkinter IDE")
-    self.window.geometry("800x600")
-    self.window.geometry("+50+50")
-    #self.window.minsize(200, 100)
-    #self.window.maxsize(500, 500)
     self.window.bind("<Configure>", self.window_Resize)
-    #/self.window
+    self.window.geometry("800x600+50+50")
+    self.window.title("Tkinter IDE")
+    self.window.minsize(535, 400)
+
+    self.designWindow = Toplevel(self.window)
+    self.designWindow.wm_attributes("-disabled", 1)
+    self.designWindow.transient(self.window)
+    self.designWindow.title("MainWindow")
+    self.designWindow.geometry("300x300")
+
+    self.designHandler = Toplevel(self.window)
+    self.designHandler.bind("<Button-1>", self.designHandler_Click)
+    self.designHandler.wm_attributes("-alpha", 0.01)
+    self.designHandler.transient(self.window)
+    self.designHandler.geometry("300x300")
 
     #http://www.tkdocs.com/tutorial/windows.html
 
@@ -19,19 +29,23 @@ def initWindow(self):
 
     self.toolBox = Frame(self.mainPanes, relief=GROOVE)
 
-    self.buttonTool = Button(self.toolBox, text="Button", command=self.okButton_Click)
+    self.buttonTool = Button(self.toolBox, text="Cursor", command=self.cursorTool_Click)
     self.buttonTool.place(x=10, y=10, width=100, height=23)
 
-    self.panelTool = Button(self.toolBox, text="Pane", command=self.okButton_Click)
-    self.panelTool.place(x=10, y=40, width=100, height=23)
+    self.buttonTool = Button(self.toolBox, text="Button", command=self.buttonTool_Click)
+    self.buttonTool.place(x=10, y=40, width=100, height=23)
+
+    self.frameTool = Button(self.toolBox, text="Frame", command=self.frameTool_Click)
+    self.frameTool.place(x=10, y=70, width=100, height=23)
 
     self.viewPanes = PanedWindow(self.mainPanes, orient=VERTICAL) #Code/Design View & Console View
 
     self.editTabs = Notebook(self.viewPanes)
-    self.editTabs.tab1 = Frame(self.editTabs)
-    self.editTabs.tab2 = Frame(self.editTabs)
-    self.editTabs.add(self.editTabs.tab1, text='MainWindow.py [Design]')
-    self.editTabs.add(self.editTabs.tab2, text='MainWindow.py')
+    self.editTabs.windows = []
+    self.editTabs.windows.append(DesignWindowData(self.editTabs))
+    self.editTabs.add(self.editTabs.windows[0].design, text='MainWindow.py [Design]')
+    self.editTabs.add(self.editTabs.windows[0].code, text='MainWindow.py')
+    self.editTabs.windows[0].widgets = []
 
     self.consoleBox = Text(self.viewPanes)
 
